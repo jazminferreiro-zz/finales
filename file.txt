@@ -1,0 +1,1 @@
+bueno este es el archivo que voy a enviar por el socket
