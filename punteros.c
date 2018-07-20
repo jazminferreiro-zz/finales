@@ -26,6 +26,17 @@ int main(int argc, char const *argv[]) {
 	C[1] = &float_num;
 	C[2] = &float_num;
 
+	unsigned int *dir = (unsigned int *)0x1000;
+	void * P = dir;
+	printf("posicion inicial: %p\n", P);
+	printf("un char ocupa 1 byte (8 bits): %p\n",((char *) P)+1);
+	printf("un int ocupa 4 bytes (32 bits): %p\n",((int *) P)+1);
+	
+	printf("un float ocupa 4 bytes (32 bits): %p\n",((float *) P)+1);
+	printf("un double ocupa 8 bytes (64 bits): %p\n",((double *) P)+1);
+
+
+
   return 0;
 }
 
