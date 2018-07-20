@@ -45,13 +45,14 @@ bool all_vowel(char * palabra){
 
 }
 
+
+
 int write_word(FILE * file, int write_point, char *palabra, char * c){
 	printf("se termino la palabra %s\n", palabra);
 	char * nueva = palabra;
 	if(all_vowel(palabra)){
 		nueva = triplicar(palabra);
 	}
-
 	if(c != NULL){
 		fseek(file, write_point - strlen(nueva), SEEK_SET);
 		fputc(*c, file);
@@ -66,13 +67,7 @@ int write_word(FILE * file, int write_point, char *palabra, char * c){
 	return write_point - strlen(nueva) - 1;
 }
 
-void process(char * file_name){
-	FILE * file = fopen(file_name, "r+b");
-	if(file == NULL){
-		printf("no se puede abrir el archivo %s\n", file_name);
-		return;
-	}
-
+int get_offset(FILE * file, int * file_size){
 	int c;
 	char palabra[100];
 	memset(palabra, 0, 100);
@@ -91,19 +86,27 @@ void process(char * file_name){
 			palabra[i++] = c;
 		}
 	}
-	int file_size = ftell(file);
+	*file_size = ftell(file);
+	return offset;
+}
 
-
+void process(char * file_name){
+	FILE * file = fopen(file_name, "r+b");
+	if(file == NULL){
+		printf("no se puede abrir el archivo %s\n", file_name);
+		return;
+	}
+	int file_size = 0;
+	int offset = get_offset(file, &file_size);
 	ftruncate(fileno(file),file_size + offset);
 	printf("nuevo tamaño %i\n", file_size + offset);
 
 	int read_point = file_size - 1 ;
 	int write_point = file_size + offset - 1;
-
-	//fseek(file, write_point, SEEK_SET);
-	//fputc('\n', file);
-	//write_point--;
 	
+	int c;
+	int i;
+	char palabra[100];
 	while(read_point >= 0){
 		fseek(file,read_point,SEEK_SET);
 		c = fgetc(file);
