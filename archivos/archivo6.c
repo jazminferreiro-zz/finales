@@ -45,11 +45,11 @@ int write_octal(FILE * file, int write_point, char * buf, int * c){
 
 	}
 	
-	fseek(file, write_point, SEEK_SET);
 	if(c !=NULL){
-		fseek(file, -1, SEEK_CUR);
-		fputc(*c, file);
 		write_point--;
+		fseek(file, write_point, SEEK_SET);
+		fputc(*c, file);
+
 	}
 
 	return write_point;
